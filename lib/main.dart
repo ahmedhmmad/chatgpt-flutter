@@ -6,7 +6,7 @@ import 'screens/home_screen.dart';
 
 void main() {
   runApp(ChangeNotifierProvider<ThemeProvider>(
-    create: (_) => ThemeProvider(),
+    create: (_) => ThemeProvider()..getTheme(),
     child: MyApp(),
   ));
 }
