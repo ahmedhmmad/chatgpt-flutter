@@ -2,6 +2,8 @@ import 'package:chatgptapp/services/assets_managers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import '../constants/constants.dart';
+import '../widgets/chat_widget.dart';
 import '../widgets/drawer_widget.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -37,10 +39,14 @@ class ChatScreen extends StatelessWidget {
           children: [
             Flexible(
               child: ListView.builder(
-                itemCount: 10,
+                itemCount: chatMessages.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text('Hello World'),
+                    title: ChatWidget(
+                      message: chatMessages[index]["message"].toString(),
+                      messageIndex: int.parse(
+                          chatMessages[index]['chatIndex'].toString()),
+                    ),
                   );
                 },
               ),
