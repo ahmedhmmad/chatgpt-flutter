@@ -4,7 +4,7 @@ Color scaffoldBgColor = const Color(0xFF0C9869);
 Color cardColor = const Color(0xFF3D405B);
 Color kTextColor = const Color(0xFF0C9869);
 double kDefaultPadding = 20.0;
-String myAPIKey = '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';
+String myAPIKey = '${MY_CHATGPT_APIKEY}';
 
 final chatMessages = [
   {
