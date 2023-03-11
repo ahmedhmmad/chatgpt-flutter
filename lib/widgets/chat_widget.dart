@@ -16,6 +16,9 @@ class ChatWidget extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
+            mainAxisAlignment: messageIndex == 0
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
             children: [
               Image.asset(
                 messageIndex == 0
@@ -24,10 +27,28 @@ class ChatWidget extends StatelessWidget {
                 height: 30,
                 width: 30,
               ),
-              Text(
-                message,
-                style: TextStyle(color: Colors.white),
+              Expanded(
+                child: Text(
+                  message,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
+              messageIndex != 0
+                  ? Row(
+                      children: [
+                        InkWell(
+                            onTap: () {},
+                            child: const Icon(Icons.thumb_up_alt_outlined,
+                                color: Colors.white)),
+                        const SizedBox(width: 10),
+                        InkWell(
+                          onTap: () {},
+                          child: const Icon(Icons.thumb_down_alt_outlined,
+                              color: Colors.white),
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
             ],
           )),
     );

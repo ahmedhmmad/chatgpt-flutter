@@ -1,3 +1,4 @@
+import 'package:chatgptapp/services/api_services.dart';
 import 'package:chatgptapp/services/assets_managers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -5,10 +6,20 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../constants/constants.dart';
 import '../widgets/chat_widget.dart';
 import '../widgets/drawer_widget.dart';
+import '../widgets/dropdown_widget.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   ChatScreen({super.key});
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
   final bool _isTyping = true;
+  String _model = 'Model 1';
+  List models = [];
+
   final TextEditingController searchTextController = TextEditingController();
 
   @override
@@ -24,10 +35,35 @@ class ChatScreen extends StatelessWidget {
                   AssetsManager.chatLogo,
                   scale: 5,
                 ),
-                Text('ChatGPT'),
+                const Text('ChatGPT'),
               ],
             ),
-            Icon(Icons.more_vert_rounded),
+            IconButton(
+              onPressed: () async {
+                await showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(25.0)),
+                    ),
+                    context: context,
+                    builder: (context) {
+                      return Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text('Choose Model',
+                                style: TextStyle(fontSize: 12)),
+                            Flexible(
+                              child: DropDownWidget(),
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+              },
+              icon: Icon(Icons.more_vert_rounded),
+            )
           ],
         ),
         // leading: Image.asset(AssetsManager.chatLogo),
