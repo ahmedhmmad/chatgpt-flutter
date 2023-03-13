@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ApiProvider extends ChangeNotifier {
+class ApiProvider {
   String apiKey = '';
   Future<String> getApiKey() async {
     SharedPreferences apiPrefs = await SharedPreferences.getInstance();
@@ -13,6 +12,6 @@ class ApiProvider extends ChangeNotifier {
     SharedPreferences apiPrefs = await SharedPreferences.getInstance();
     this.apiKey = apiKey;
     await apiPrefs.setString('apiKey', apiKey);
-    notifyListeners();
+    //notifyListeners();
   }
 }

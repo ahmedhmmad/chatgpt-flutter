@@ -2,8 +2,10 @@ import 'package:chatgptapp/providers/apikey_provider.dart';
 import 'package:chatgptapp/providers/models_provider.dart';
 import 'package:chatgptapp/providers/theme_provider.dart';
 import 'package:chatgptapp/screens/chat_screen.dart';
+import 'package:chatgptapp/screens/enter_api_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'screens/home_screen.dart';
 
@@ -16,6 +18,20 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  bool isApiSet() {
+    SharedPreferences.getInstance().then((prefs) {
+      String apiKey = prefs.getString('apiKey') ?? '';
+      if (apiKey == '') {
+        print('API Key not set');
+        return false;
+      } else {
+        print('API Key set');
+        return true;
+      }
+    });
+    print('exit');
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +56,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
           themeMode: Provider.of<ThemeProvider>(context).themeMode,
-          home: ChatScreen(),
+          home: isApiSet() ? ChatScreen() : const EnterApiScreen(),
         ));
   }
 }
