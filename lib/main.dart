@@ -1,9 +1,11 @@
+import 'package:chatgptapp/providers/apikey_provider.dart';
+import 'package:chatgptapp/providers/models_provider.dart';
 import 'package:chatgptapp/providers/theme_provider.dart';
 import 'package:chatgptapp/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'screens/home_screen.dart';
+// import 'screens/home_screen.dart';
 
 void main() {
   runApp(ChangeNotifierProvider<ThemeProvider>(
@@ -17,15 +19,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(builder: (context, provider, child) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'ChatGPT',
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
-        themeMode: provider.themeMode,
-        home: ChatScreen(),
-      );
-    });
+    return MultiProvider(
+        providers: [
+          Provider<ThemeProvider>(create: (_) => ThemeProvider()..getTheme()),
+          Provider<ModelsProvider>(create: (_) => ModelsProvider()),
+          Provider<ApiProvider>(create: (_) => ApiProvider()..getApiKey()),
+          // Provider<AnotherThing>(create: (_) => AnotherThing()),
+        ],
+
+        //   MultiProvider(
+        //     providers:[
+        //     ChangeNotifierProvider(
+        //       Provider<ThemeProvider>(create: (_)=>ThemeProvider()..getTheme(),),
+        //       Provider<ModelsProvider>(create: (_)=>ModelsProvider()..getModels()),
+        //     ),
+        //     ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'ChatGPT',
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          themeMode: Provider.of<ThemeProvider>(context).themeMode,
+          home: ChatScreen(),
+        ));
   }
 }
