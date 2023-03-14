@@ -62,14 +62,14 @@ class _ChatScreenState extends State<ChatScreen> {
                       );
                     });
               },
-              icon: Icon(Icons.more_vert_rounded),
+              icon: const Icon(Icons.more_vert_rounded),
             )
           ],
         ),
         // leading: Image.asset(AssetsManager.chatLogo),
         elevation: 0.0,
       ),
-      drawer: MyDrawaer(),
+      drawer: const MyDrawaer(),
       body: SafeArea(
         child: Column(
           children: [

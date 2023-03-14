@@ -11,12 +11,12 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
       appBar: AppBar(
-        title: Text('ChatGPT'),
+        title: const Text('ChatGPT'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Hello World'),
       ),
-      drawer: MyDrawaer(),
+      drawer: const MyDrawaer(),
     );
     return scaffold;
   }

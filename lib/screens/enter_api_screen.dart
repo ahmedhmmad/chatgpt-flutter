@@ -2,6 +2,7 @@ import 'package:chatgptapp/providers/apikey_provider.dart';
 import 'package:chatgptapp/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/constants.dart';
 
@@ -21,7 +22,7 @@ class EnterApiScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
                 controller: apiKeyController,
                 decoration: const InputDecoration(
@@ -29,6 +30,16 @@ class EnterApiScreen extends StatelessWidget {
                   labelText: 'Enter API Key',
                 ),
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Don\'t have an API Key?'),
+                TextButton(
+                  onPressed: _launchUrl,
+                  child: const Text('Get API Key'),
+                ),
+              ],
             ),
             MaterialButton(
               autofocus: true,
@@ -48,5 +59,13 @@ class EnterApiScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl() async {
+    final Uri _url = Uri.parse(apiWebsite);
+
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 }
