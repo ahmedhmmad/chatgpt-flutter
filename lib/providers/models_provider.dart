@@ -16,7 +16,6 @@ class ModelsProvider extends ChangeNotifier {
   }
 
   void setCurrentModel(String currentModel) {
-    print('2');
     this.currentModel = currentModel;
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString('currentModel', currentModel);
