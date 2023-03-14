@@ -1,9 +1,12 @@
-import 'package:chatgptapp/providers/theme_provider.dart';
-import 'package:chatgptapp/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'screens/home_screen.dart';
+import 'providers/apikey_provider.dart';
+import 'providers/models_provider.dart';
+import 'providers/theme_provider.dart';
+import 'screens/chat_screen.dart';
+import 'screens/enter_api_screen.dart';
 
 void main() {
   runApp(ChangeNotifierProvider<ThemeProvider>(
@@ -13,19 +16,57 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
+
+  Future<bool> isApiSet() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String apiKey = prefs.getString('apiKey') ?? '';
+    if (apiKey == '') {
+      print('API Key not set');
+      return false;
+    } else {
+      print('API Key set');
+      return true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(builder: (context, provider, child) {
-      return MaterialApp(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => ThemeProvider()..getTheme(),
+        ),
+        Provider<ModelsProvider>(
+          create: (_) => ModelsProvider(),
+        ),
+        Provider<ApiProvider>(
+          create: (_) => ApiProvider()..getApiKey(),
+        ),
+      ],
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'ChatGPT',
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
-        themeMode: provider.themeMode,
-        home: ChatScreen(),
-      );
-    });
+        themeMode: Provider.of<ThemeProvider>(context).themeMode,
+        home: FutureBuilder<bool>(
+          future: isApiSet(),
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(
+                color: Colors.white,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            } else {
+              bool apiSet = snapshot.data ?? false;
+              return apiSet ? ChatScreen() : EnterApiScreen();
+            }
+          },
+        ),
+      ),
+    );
   }
 }
