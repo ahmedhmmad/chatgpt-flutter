@@ -11,7 +11,7 @@ import 'screens/enter_api_screen.dart';
 void main() {
   runApp(ChangeNotifierProvider<ThemeProvider>(
     create: (_) => ThemeProvider()..getTheme(),
-    child: const MyApp(),
+    child: MyApp(),
   ));
 }
 
@@ -33,40 +33,43 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeProvider>(
-          create: (_) => ThemeProvider()..getTheme(),
-        ),
-        ChangeNotifierProvider<ModelsProvider>(
-          create: (_) => ModelsProvider(),
-        ),
-        Provider<ApiProvider>(
-          create: (_) => ApiProvider()..getApiKey(),
-        ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'ChatGPT',
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
-        themeMode: Provider.of<ThemeProvider>(context).themeMode,
-        home: FutureBuilder<bool>(
-          future: isApiSet(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
-                color: Colors.white,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            } else {
-              bool apiSet = snapshot.data ?? false;
-              return apiSet ? ChatScreen() : const EnterApiScreen();
-            }
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (_) => ThemeProvider()..getTheme(),
+          ),
+          ChangeNotifierProvider<ModelsProvider>(
+            create: (_) => ModelsProvider(),
+          ),
+          Provider<ApiProvider>(
+            create: (_) => ApiProvider()..getApiKey(),
+          ),
+        ],
+        child: Consumer<ThemeProvider>(
+          builder: (context, themeProvider, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'ChatGPT',
+              theme: ThemeData.light(),
+              darkTheme: ThemeData.dark(),
+              themeMode: themeProvider.themeMode,
+              home: FutureBuilder<bool>(
+                future: isApiSet(),
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      color: Colors.white,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else {
+                    bool apiSet = snapshot.data ?? false;
+                    return apiSet ? ChatScreen() : const EnterApiScreen();
+                  }
+                },
+              ),
+            );
           },
-        ),
-      ),
-    );
+        ));
   }
 }
