@@ -11,7 +11,7 @@ import 'screens/enter_api_screen.dart';
 void main() {
   runApp(ChangeNotifierProvider<ThemeProvider>(
     create: (_) => ThemeProvider()..getTheme(),
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 
@@ -22,10 +22,10 @@ class MyApp extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String apiKey = prefs.getString('apiKey') ?? '';
     if (apiKey == '') {
-      print('API Key not set');
+      //print('API Key not set');
       return false;
     } else {
-      print('API Key set');
+      //print('API Key set');
       return true;
     }
   }
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ThemeProvider>(
           create: (_) => ThemeProvider()..getTheme(),
         ),
-        Provider<ModelsProvider>(
+        ChangeNotifierProvider<ModelsProvider>(
           create: (_) => ModelsProvider(),
         ),
         Provider<ApiProvider>(
@@ -56,13 +56,13 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Container(
                 color: Colors.white,
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               );
             } else {
               bool apiSet = snapshot.data ?? false;
-              return apiSet ? ChatScreen() : EnterApiScreen();
+              return apiSet ? ChatScreen() : const EnterApiScreen();
             }
           },
         ),

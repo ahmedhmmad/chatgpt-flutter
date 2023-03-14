@@ -5,7 +5,7 @@ Color scaffoldBgColor = const Color(0xFF0C9869);
 Color cardColor = const Color(0xFF3D405B);
 Color kTextColor = const Color(0xFF0C9869);
 double kDefaultPadding = 20.0;
-// String apiKey = apiPrefs.getString('apiKey') ?? '';
+String apiWebsite = 'https://platform.openai.com/account/api-keys';
 
 final chatMessages = [
   {
