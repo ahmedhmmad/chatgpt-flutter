@@ -7,7 +7,7 @@ Color kTextColor = const Color(0xFF0C9869);
 double kDefaultPadding = 20.0;
 String apiWebsite = 'https://platform.openai.com/account/api-keys';
 
-final chatMessages = [
+final chatMessages2 = [
   {
     "message": "Hello",
     "chatIndex": 0,
