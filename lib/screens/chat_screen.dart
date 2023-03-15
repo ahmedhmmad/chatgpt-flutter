@@ -2,8 +2,11 @@ import 'package:chatgptapp/services/api_services.dart';
 import 'package:chatgptapp/services/assets_managers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
+import '../models/chat_model.dart';
+import '../providers/models_provider.dart';
 import '../widgets/chat_widget.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/dropdown_widget.dart';
@@ -16,14 +19,18 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final bool _isTyping = true;
-  String _model = 'Model 1';
+  bool _isTyping = false;
+  String? currentModel;
   List models = [];
+  late List<ChatModel> chatMessages = [];
 
   final TextEditingController searchTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final modelProvider = Provider.of<ModelsProvider>(context);
+    String currentModel = modelProvider.currentModel;
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -79,9 +86,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: ChatWidget(
-                      message: chatMessages[index]["message"].toString(),
-                      messageIndex: int.parse(
-                          chatMessages[index]['chatIndex'].toString()),
+                      message: chatMessages[index].message,
+                      messageIndex: chatMessages[index].chatIndex,
                     ),
                   );
                 },
@@ -101,16 +107,18 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: searchTextController,
                       onSubmitted: (value) {},
-                      decoration: InputDecoration.collapsed(
+                      decoration: const InputDecoration.collapsed(
                         hintText: 'Type a message',
                         border: InputBorder.none,
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: () {},
-                  ),
+                      icon: const Icon(Icons.send),
+                      onPressed: () async {
+                        await sendMessage(
+                            searchTextController.text, currentModel);
+                      }),
                 ],
               ),
             )
@@ -118,5 +126,26 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> sendMessage(String text, String currentModel) async {
+    try {
+      setState(() {
+        _isTyping = true;
+        chatMessages.add(ChatModel(
+          message: text,
+          chatIndex: 0,
+        ));
+        searchTextController.text = '';
+      });
+      chatMessages
+          .addAll(await APIServices().getChatResponse(text, currentModel));
+
+      setState(() {});
+    } finally {
+      setState(() {
+        _isTyping = false;
+      });
+    }
   }
 }

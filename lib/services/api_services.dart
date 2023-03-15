@@ -4,9 +4,11 @@ import 'package:chatgptapp/models/models_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/constants.dart';
+import '../models/chat_model.dart';
 
 class APIServices {
   List<ModelsModel> models = [];
+  List<ChatModel> chatModel = [];
 
   //Get API Key from Shared Preferences
 
@@ -21,7 +23,7 @@ class APIServices {
 
   Future<List<ModelsModel>> getModels() async {
     String myAPIKey = await this.myAPIKey();
-    
+
     var url = Uri.parse('https://api.openai.com/v1/models');
 
     var response = await http.get(
@@ -39,5 +41,38 @@ class APIServices {
     }
 
     return models;
+  }
+
+  Future<List<ChatModel>> getChatResponse(
+      String message, String modelId) async {
+    String myAPIKey = await this.myAPIKey();
+
+    var url = Uri.parse('https://api.openai.com/v1/completions');
+
+    var response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $myAPIKey',
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(
+        {
+          "model": modelId,
+          "prompt": message,
+          "max_tokens": 100,
+        },
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load models');
+    }
+    var data = jsonDecode(response.body);
+
+    for (var msg in data['choices']) {
+      chatModel.add(ChatModel.fromJson(msg));
+    }
+
+    return chatModel;
   }
 }
