@@ -1,8 +1,9 @@
 import 'package:chatgptapp/providers/apikey_provider.dart';
 import 'package:chatgptapp/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../constants/constants.dart';
 
@@ -12,6 +13,26 @@ class EnterApiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController apiKeyController = TextEditingController();
+    final WebViewController webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(apiWebsite));
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +57,9 @@ class EnterApiScreen extends StatelessWidget {
               children: [
                 Text('Don\'t have an API Key?'),
                 TextButton(
-                  onPressed: _launchUrl,
+                  onPressed: () {
+                    _launchUrl(context, webViewController);
+                  },
                   child: const Text('Get API Key'),
                 ),
               ],
@@ -61,11 +84,40 @@ class EnterApiScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _launchUrl() async {
-    final Uri _url = Uri.parse(apiWebsite);
+  // Future<void> _launchUrl() async {
+  //   final Uri _url = Uri.parse(apiWebsite);
 
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
-    }
+  //   if (!await launchUrl(_url)) {
+  //     throw Exception('Could not launch $_url');
+  //   }
+  // }
+
+  // _launchUrl(WebViewController x) {
+  //   return Scaffold(
+  //     appBar: AppBar(title: const Text('Flutter Simple Example')),
+  //     body: WebViewWidget(controller: x),
+  //   );
+  // }
+
+  void _launchUrl(BuildContext context, WebViewController controller) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext context) => Scaffold(
+                appBar: AppBar(
+                  title: const Text('OpenAI API'),
+                  backgroundColor: scaffoldBgColor,
+                  actions: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+                body: WebViewWidget(controller: controller),
+              )),
+    );
   }
 }
