@@ -6,6 +6,7 @@ Color cardColor = const Color(0xFF3D405B);
 Color kTextColor = const Color(0xFF0C9869);
 double kDefaultPadding = 20.0;
 String apiWebsite = 'https://platform.openai.com/account/api-keys';
+String baseUrl = 'https://api.openai.com/v1';
 
 final chatMessages2 = [
   {

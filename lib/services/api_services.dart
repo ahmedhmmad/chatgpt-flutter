@@ -24,7 +24,7 @@ class APIServices {
   Future<List<ModelsModel>> getModels() async {
     String myAPIKey = await this.myAPIKey();
 
-    var url = Uri.parse('https://api.openai.com/v1/models');
+    var url = Uri.parse('$baseUrl/models');
 
     var response = await http.get(
       url,
@@ -47,7 +47,7 @@ class APIServices {
       String message, String modelId) async {
     String myAPIKey = await this.myAPIKey();
 
-    var url = Uri.parse('https://api.openai.com/v1/completions');
+    var url = Uri.parse('$baseUrl/completions');
 
     var response = await http.post(
       url,
