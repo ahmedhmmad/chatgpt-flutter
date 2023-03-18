@@ -67,7 +67,8 @@ class APIServices {
     if (response.statusCode != 200) {
       throw Exception('Failed to load models');
     }
-    var data = jsonDecode(response.body);
+    //var data = jsonDecode(response.body);
+    Map data = json.decode(utf8.decode(response.bodyBytes));
 
     for (var msg in data['choices']) {
       chatModel.add(ChatModel.fromJson(msg));
@@ -102,7 +103,8 @@ class APIServices {
     if (response.statusCode != 200) {
       throw Exception('Failed to load models');
     }
-    var data = jsonDecode(response.body);
+    // var data = jsonDecode(response.body);
+    Map data = json.decode(utf8.decode(response.bodyBytes));
 
     List<ChatModel> chatModel = [];
 
