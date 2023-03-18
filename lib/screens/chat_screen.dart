@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/constants.dart';
 import '../models/chat_model.dart';
+import '../providers/chat_provider.dart';
 import '../providers/models_provider.dart';
 import '../widgets/chat_widget.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/dropdown_widget.dart';
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen({super.key});
+  const ChatScreen({super.key});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -22,7 +22,8 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _isTyping = false;
   String? currentModel;
   List models = [];
-  late List<ChatModel> chatMessages = [];
+
+  // late List<ChatModel> chatMessages = [];
 
   final TextEditingController searchTextController = TextEditingController();
   final ScrollController scrollController = ScrollController();
@@ -30,6 +31,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final modelProvider = Provider.of<ModelsProvider>(context);
+    final chatProvider = Provider.of<ChatProvider>(context);
+
     String currentModel = modelProvider.currentModel;
 
     return Scaffold(
@@ -84,12 +87,13 @@ class _ChatScreenState extends State<ChatScreen> {
             Flexible(
               child: ListView.builder(
                 controller: scrollController,
-                itemCount: chatMessages.length,
+                itemCount: chatProvider.getChatMessages.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: ChatWidget(
-                      message: chatMessages[index].message,
-                      messageIndex: chatMessages[index].chatIndex,
+                      message: chatProvider.getChatMessages[index].message,
+                      messageIndex:
+                          chatProvider.getChatMessages[index].chatIndex,
                     ),
                   );
                 },
@@ -118,8 +122,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   IconButton(
                       icon: const Icon(Icons.send),
                       onPressed: () async {
-                        await sendMessage(
-                            searchTextController.text, currentModel);
+                        await sendMessage(searchTextController.text,
+                            currentModel, chatProvider);
                       }),
                 ],
               ),
@@ -138,18 +142,19 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Future<void> sendMessage(String text, String currentModel) async {
+  Future<void> sendMessage(
+      String text, String currentModel, ChatProvider provider) async {
     try {
       setState(() {
         _isTyping = true;
-        chatMessages.add(ChatModel(
+        provider.addMessage(ChatModel(
           message: text,
           chatIndex: 0,
         ));
         searchTextController.text = '';
       });
-      chatMessages
-          .addAll(await APIServices().getChatResponse(text, currentModel));
+      provider.addAllMessages(
+          await APIServices().getChatResponse(text, currentModel));
 
       setState(() {});
     } finally {
