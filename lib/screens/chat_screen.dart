@@ -38,53 +38,62 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
+          mainAxisSize:
+              MainAxisSize.min, // set mainAxisSize to MainAxisSize.min
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset(
               AssetsManager.chatLogo,
-              scale: 5,
+              scale: 7,
             ),
-            Row(
-              children: [
-                const Text('ChatGPT-Model: ', style: TextStyle(fontSize: 14)),
-                Text(currentModel.toUpperCase(),
+            const SizedBox(
+                width: 8), // add some spacing between the logo and the text
+            Flexible(
+              fit: FlexFit.loose, // use FlexFit.loose for the flexible child
+              child: Row(
+                children: [
+                  const Text('GPT-Model: ', style: TextStyle(fontSize: 12)),
+                  Text(
+                    currentModel.toUpperCase(),
                     style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amber)),
-              ],
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber,
+                    ),
+                  ),
+                ],
+              ),
             ),
             IconButton(
               onPressed: () async {
                 await showModalBottomSheet(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(25.0)),
-                    ),
-                    context: context,
-                    builder: (context) {
-                      return Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text('Choose Model',
-                                style: TextStyle(fontSize: 12)),
-                            Flexible(
-                              child: DropDownWidget(),
-                            ),
-                          ],
-                        ),
-                      );
-                    });
+                  shape: const RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(25.0)),
+                  ),
+                  context: context,
+                  builder: (context) {
+                    return Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text('Choose Model', style: TextStyle(fontSize: 12)),
+                          Flexible(
+                            child: DropDownWidget(),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
               },
               icon: const Icon(Icons.more_vert_rounded),
-            )
+            ),
           ],
         ),
-        // leading: Image.asset(AssetsManager.chatLogo),
-        elevation: 0.0,
       ),
+      backgroundColor: Colors.white,
       drawer: const MyDrawaer(),
       body: SafeArea(
         child: Column(
@@ -178,8 +187,16 @@ class _ChatScreenState extends State<ChatScreen> {
         ));
         searchTextController.text = '';
       });
-      provider.addAllMessages(
-          await APIServices().getChatResponse(text, currentModel));
+      if (currentModel == 'gpt-3.5-turbo' ||
+          currentModel == 'gpt-3.5' ||
+          currentModel == 'gpt-3.0' ||
+          currentModel == 'gpt-3.5-turbo-0301') {
+        provider.addAllMessages(
+            await APIServices().getChatGptResponse(text, currentModel));
+      } else {
+        provider.addAllMessages(
+            await APIServices().getChatResponse(text, currentModel));
+      }
 
       setState(() {});
     } catch (error) {
