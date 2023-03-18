@@ -1,7 +1,6 @@
 import 'package:chatgptapp/providers/apikey_provider.dart';
 import 'package:chatgptapp/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -16,22 +15,22 @@ class EnterApiScreen extends StatelessWidget {
     final WebViewController webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
+      // ..setNavigationDelegate(
+      //   NavigationDelegate(
+      //     onProgress: (int progress) {
+      //       // Update loading bar.
+      //     },
+      //     onPageStarted: (String url) {},
+      //     onPageFinished: (String url) {},
+      //     onWebResourceError: (WebResourceError error) {},
+      //     onNavigationRequest: (NavigationRequest request) {
+      //       if (request.url.startsWith('https://www.youtube.com/')) {
+      //         return NavigationDecision.prevent;
+      //       }
+      //       return NavigationDecision.navigate;
+      //     },
+      //   ),
+      // )
       ..loadRequest(Uri.parse(apiWebsite));
 
     return Scaffold(
@@ -65,6 +64,9 @@ class EnterApiScreen extends StatelessWidget {
               ],
             ),
             MaterialButton(
+              textColor: Colors.white,
+              minWidth: 200,
+              height: 50,
               autofocus: true,
               color: scaffoldBgColor,
               shape: RoundedRectangleBorder(
@@ -76,7 +78,10 @@ class EnterApiScreen extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ChatScreen()));
               },
-              child: const Text('Submit'),
+              child: const Text(
+                'Submit',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
           ],
         ),
