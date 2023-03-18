@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatgptapp/constants/constants.dart';
 import 'package:chatgptapp/services/assets_managers.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,21 @@ class ChatWidget extends StatelessWidget {
                 width: 30,
               ),
               Expanded(
-                child: Text(
-                  message,
-                  style: const TextStyle(color: Colors.white),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      message,
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      ),
+                      speed: const Duration(milliseconds: 50),
+                    ),
+                  ],
+                  isRepeatingAnimation: false,
+                  pause: const Duration(milliseconds: 1000),
+                  displayFullTextOnTap: true,
+                  stopPauseOnTap: true,
                 ),
               ),
               messageIndex != 0

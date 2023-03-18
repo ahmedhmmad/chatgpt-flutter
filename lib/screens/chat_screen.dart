@@ -25,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
   late List<ChatModel> chatMessages = [];
 
   final TextEditingController searchTextController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Flexible(
               child: ListView.builder(
+                controller: scrollController,
                 itemCount: chatMessages.length,
                 itemBuilder: (context, index) {
                   return ListTile(
@@ -128,6 +130,14 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  void scrollList() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
   Future<void> sendMessage(String text, String currentModel) async {
     try {
       setState(() {
@@ -144,6 +154,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {});
     } finally {
       setState(() {
+        scrollList();
         _isTyping = false;
       });
     }
