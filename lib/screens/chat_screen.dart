@@ -38,15 +38,20 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Image.asset(
+              AssetsManager.chatLogo,
+              scale: 5,
+            ),
             Row(
               children: [
-                Image.asset(
-                  AssetsManager.chatLogo,
-                  scale: 5,
-                ),
-                const Text('ChatGPT'),
+                const Text('ChatGPT-Model: ', style: TextStyle(fontSize: 14)),
+                Text(currentModel.toUpperCase(),
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber)),
               ],
             ),
             IconButton(
@@ -122,8 +127,28 @@ class _ChatScreenState extends State<ChatScreen> {
                   IconButton(
                       icon: const Icon(Icons.send),
                       onPressed: () async {
-                        await sendMessage(searchTextController.text,
-                            currentModel, chatProvider);
+                        if (searchTextController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              duration: Duration(milliseconds: 500),
+                              backgroundColor: Colors.red,
+                              content: Text('Please enter a message'),
+                            ),
+                          );
+                          return;
+                        } else if (currentModel.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              duration: Duration(milliseconds: 500),
+                              backgroundColor: Colors.red,
+                              content: Text('Please select a model'),
+                            ),
+                          );
+                          return;
+                        } else {
+                          await sendMessage(searchTextController.text,
+                              currentModel, chatProvider);
+                        }
                       }),
                 ],
               ),
@@ -157,6 +182,13 @@ class _ChatScreenState extends State<ChatScreen> {
           await APIServices().getChatResponse(text, currentModel));
 
       setState(() {});
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Something went wrong ${error.toString()}'),
+        ),
+      );
     } finally {
       setState(() {
         scrollList();
