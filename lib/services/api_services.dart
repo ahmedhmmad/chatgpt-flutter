@@ -75,4 +75,42 @@ class APIServices {
 
     return chatModel;
   }
+
+  Future<List<ChatModel>> getChatGptResponse(
+      String message, String modelId) async {
+    String myAPIKey = await this.myAPIKey();
+
+    var url = Uri.parse('$baseUrl/chat/completions');
+    var response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $myAPIKey',
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode(
+        {
+          "model": modelId,
+          "messages": [
+            {"role": "user", "content": message}
+          ],
+          "max_tokens": 100,
+        },
+      ),
+    );
+    //print(response.body);
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load models');
+    }
+    var data = jsonDecode(response.body);
+
+    List<ChatModel> chatModel = [];
+
+    if (data['choices'] != null && data['choices'].length > 0) {
+      var messages = data['choices'][0]['message']['content'];
+      chatModel.add(ChatModel(message: messages, chatIndex: 1));
+    }
+
+    return chatModel;
+  }
 }
