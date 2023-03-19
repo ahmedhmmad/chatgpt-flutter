@@ -14,8 +14,13 @@ class ChatWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: messageIndex == 0 ? scaffoldBgColor : cardColor,
-      child: Padding(
+      child: Container(
+          alignment: Alignment.center,
           padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: messageIndex == 0 ? scaffoldBgColor : cardColor,
+          ),
           child: Row(
             mainAxisAlignment: messageIndex == 0
                 ? MainAxisAlignment.end
