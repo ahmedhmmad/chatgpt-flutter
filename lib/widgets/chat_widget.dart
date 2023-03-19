@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class ChatWidget extends StatelessWidget {
   const ChatWidget(
-      {super.key, required this.message, required this.messageIndex});
+      {Key? key, required this.message, required this.messageIndex})
+      : super(key: key);
 
   final String message;
   final int messageIndex;
@@ -13,62 +14,66 @@ class ChatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: messageIndex == 0 ? scaffoldBgColor : cardColor,
+      //color: messageIndex == 0 ? scaffoldBgColor : cardColor,
       child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: messageIndex == 0 ? scaffoldBgColor : cardColor,
-          ),
-          child: Row(
-            mainAxisAlignment: messageIndex == 0
-                ? MainAxisAlignment.end
-                : MainAxisAlignment.start,
-            children: [
-              Image.asset(
-                messageIndex == 0
-                    ? AssetsManager.chatLogo
-                    : AssetsManager.userImage,
-                height: 30,
-                width: 30,
-              ),
-              Expanded(
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                      message,
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      ),
-                      speed: const Duration(milliseconds: 50),
-                    ),
-                  ],
-                  isRepeatingAnimation: false,
-                  pause: const Duration(milliseconds: 1000),
-                  displayFullTextOnTap: true,
-                  stopPauseOnTap: true,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: messageIndex == 0
+              ? MainAxisAlignment.end
+              : MainAxisAlignment.start,
+          children: [
+            if (messageIndex != 0)
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Image.asset(
+                  AssetsManager.userImage,
+                  height: 30,
+                  width: 30,
                 ),
               ),
-              messageIndex != 0
-                  ? Row(
-                      children: [
-                        InkWell(
-                            onTap: () {},
-                            child: const Icon(Icons.thumb_up_alt_outlined,
-                                color: Colors.white)),
-                        const SizedBox(width: 10),
-                        InkWell(
-                          onTap: () {},
-                          child: const Icon(Icons.thumb_down_alt_outlined,
-                              color: Colors.white),
-                        ),
-                      ],
-                    )
-                  : const SizedBox(),
-            ],
-          )),
+            Container(
+              decoration: BoxDecoration(
+                color:
+                    messageIndex == 0 ? Color(0xff0078FF) : Color(0xffF1F0F0),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.6,
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 10.0,
+              ),
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    message,
+                    textStyle: TextStyle(
+                      color: messageIndex == 0 ? Colors.white : Colors.black,
+                      fontSize: 16.0,
+                    ),
+                    speed: const Duration(milliseconds: 50),
+                  ),
+                ],
+                isRepeatingAnimation: false,
+                pause: const Duration(milliseconds: 1000),
+                displayFullTextOnTap: true,
+                stopPauseOnTap: true,
+              ),
+            ),
+            if (messageIndex == 0)
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Image.asset(
+                  AssetsManager.chatLogo,
+                  height: 30,
+                  width: 30,
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
