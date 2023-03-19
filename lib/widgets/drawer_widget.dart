@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
+import '../screens/settings_screen.dart';
 
 class MyDrawaer extends StatelessWidget {
   const MyDrawaer({super.key});
@@ -28,7 +29,10 @@ class MyDrawaer extends StatelessWidget {
           ListTile(
             title: const Text('Settings'),
             onTap: () {
-              Navigator.pushNamed(context, '/settings');
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsScreen()));
             },
           ),
           ListTile(

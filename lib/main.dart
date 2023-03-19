@@ -1,4 +1,5 @@
 import 'package:chatgptapp/providers/chat_provider.dart';
+import 'package:chatgptapp/providers/token_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<ChatProvider>(
             create: (_) => ChatProvider(),
+          ),
+          ChangeNotifierProvider<TokenProvider>(
+            create: (_) => TokenProvider(),
           ),
         ],
         child: Consumer<ThemeProvider>(
