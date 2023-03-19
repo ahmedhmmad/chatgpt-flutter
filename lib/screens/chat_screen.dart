@@ -1,3 +1,4 @@
+import 'package:chatgptapp/constants/constants.dart';
 import 'package:chatgptapp/services/api_services.dart';
 import 'package:chatgptapp/services/assets_managers.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: scaffoldBgColor,
         title: Row(
           mainAxisSize:
               MainAxisSize.min, // set mainAxisSize to MainAxisSize.min
