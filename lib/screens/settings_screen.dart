@@ -37,6 +37,23 @@ class SettingsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5)),
                     color: scaffoldBgColor,
                     onPressed: () {
+                      if (tokenController.text.toString().isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please enter a valid token'),
+                          ),
+                        );
+                        return;
+                      } else if (int.parse(tokenController.text.toString()) <=
+                          0) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please enter a valid token'),
+                          ),
+                        );
+                        return;
+                      }
+
                       tokenProvider
                           .setToken(int.parse(tokenController.text.toString()));
                       //return the previous screen
