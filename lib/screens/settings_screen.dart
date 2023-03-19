@@ -2,6 +2,8 @@ import 'package:chatgptapp/providers/token_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../constants/constants.dart';
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -33,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
                   MaterialButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)),
-                    color: Colors.blue,
+                    color: scaffoldBgColor,
                     onPressed: () {
                       tokenProvider
                           .setToken(int.parse(tokenController.text.toString()));
@@ -53,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
                   MaterialButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)),
-                    color: Colors.blue,
+                    color: scaffoldBgColor,
                     onPressed: () {
                       //return the previous screen
                       Navigator.pop(context);
