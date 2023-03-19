@@ -1,3 +1,4 @@
+import 'package:chatgptapp/screens/about_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +39,8 @@ class MyDrawaer extends StatelessWidget {
           ListTile(
             title: const Text('About'),
             onTap: () {
-              Navigator.pushNamed(context, '/about');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AboutScreen()));
             },
           ),
         ],
