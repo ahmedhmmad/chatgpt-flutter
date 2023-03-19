@@ -46,6 +46,8 @@ class APIServices {
   Future<List<ChatModel>> getChatResponse(
       String message, String modelId) async {
     String myAPIKey = await this.myAPIKey();
+    SharedPreferences apiPrefs = await SharedPreferences.getInstance();
+    int maxToken = apiPrefs.getInt('token') ?? 100;
 
     var url = Uri.parse('$baseUrl/completions');
 
@@ -59,7 +61,7 @@ class APIServices {
         {
           "model": modelId,
           "prompt": message,
-          "max_tokens": 100,
+          "max_tokens": maxToken,
         },
       ),
     );
@@ -80,6 +82,8 @@ class APIServices {
   Future<List<ChatModel>> getChatGptResponse(
       String message, String modelId) async {
     String myAPIKey = await this.myAPIKey();
+    SharedPreferences apiPrefs = await SharedPreferences.getInstance();
+    int maxToken = apiPrefs.getInt('token') ?? 100;
 
     var url = Uri.parse('$baseUrl/chat/completions');
     var response = await http.post(
@@ -94,7 +98,7 @@ class APIServices {
           "messages": [
             {"role": "user", "content": message}
           ],
-          "max_tokens": 100,
+          "max_tokens": maxToken,
         },
       ),
     );
