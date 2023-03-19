@@ -124,17 +124,28 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: searchTextController,
-                      onSubmitted: (value) {},
-                      decoration: const InputDecoration.collapsed(
-                        hintText: 'Type a message',
-                        border: InputBorder.none,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 30),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: TextField(
+                        controller: searchTextController,
+                        onSubmitted: (value) {},
+                        decoration: const InputDecoration.collapsed(
+                            hintText: 'Type a message',
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                            )),
                       ),
                     ),
                   ),
                   IconButton(
-                      icon: const Icon(Icons.send),
+                      icon: const Icon(Icons.send, color: Colors.blue),
                       onPressed: () async {
                         if (searchTextController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
