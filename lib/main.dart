@@ -15,7 +15,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 void main() {
   runApp(ChangeNotifierProvider<ThemeProvider>(
     create: (_) => ThemeProvider()..getTheme(),
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 
@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
                     );
                   } else {
                     bool apiSet = snapshot.data ?? false;
-                    return apiSet ? ChatScreen() : const EnterApiScreen();
+                    return apiSet ? const ChatScreen() : const EnterApiScreen();
                   }
                 },
               ),

@@ -1,5 +1,4 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:chatgptapp/constants/constants.dart';
 import 'package:chatgptapp/services/assets_managers.dart';
 import 'package:flutter/material.dart';
 
@@ -34,8 +33,9 @@ class ChatWidget extends StatelessWidget {
               ),
             Container(
               decoration: BoxDecoration(
-                color:
-                    messageIndex == 0 ? Color(0xff0078FF) : Color(0xffF1F0F0),
+                color: messageIndex == 0
+                    ? const Color(0xff0078FF)
+                    : const Color(0xffF1F0F0),
                 borderRadius: BorderRadius.circular(20.0),
               ),
               constraints: BoxConstraints(

@@ -52,8 +52,9 @@ class _DropDownWidgetState extends State<DropDownWidget> {
                   .setCurrentModel(currentModel!);
             },
             value: currentModel,
-            // ignore: unnecessary_null_comparison
+            // ignore: unnecessary_null_comparison, unrelated_type_equality_checks
             hint: Provider.of<ModelsProvider>(context, listen: false)
+                        // ignore: unnecessary_null_comparison
                         .getCurrentModel ==
                     null
                 ? const Text('Select Model')

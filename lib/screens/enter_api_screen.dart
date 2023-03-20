@@ -54,7 +54,7 @@ class EnterApiScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Don\'t have an API Key?'),
+                const Text('Don\'t have an API Key?'),
                 TextButton(
                   onPressed: () {
                     _launchUrl(context, webViewController);
@@ -73,10 +73,22 @@ class EnterApiScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               onPressed: () {
+                if (apiKeyController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text('Please enter API Key'),
+                    ),
+                  );
+                  return;
+                }
+
                 Provider.of<ApiProvider>(context, listen: false)
                     .setApiKey(apiKeyController.text);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ChatScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ChatScreen()));
               },
               child: const Text(
                 'Submit',

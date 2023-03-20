@@ -7,7 +7,7 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xEBEAEFD0),
+      backgroundColor: const Color(0xEBEAEFD0),
       appBar: AppBar(
         backgroundColor: scaffoldBgColor,
         elevation: 0,
