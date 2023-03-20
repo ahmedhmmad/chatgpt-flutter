@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../models/chat_model.dart';
 import '../providers/chat_provider.dart';
 import '../providers/models_provider.dart';
+import '../providers/theme_provider.dart';
 import '../widgets/chat_widget.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/dropdown_widget.dart';
@@ -33,12 +34,14 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     final modelProvider = Provider.of<ModelsProvider>(context);
     final chatProvider = Provider.of<ChatProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     String currentModel = modelProvider.currentModel;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: scaffoldBgColor,
+        backgroundColor:
+            themeProvider.isDarkMode ? Colors.black26 : scaffoldBgColor,
         title: Row(
           mainAxisSize:
               MainAxisSize.min, // set mainAxisSize to MainAxisSize.min
@@ -127,22 +130,27 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   Expanded(
                     child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 30),
+                          horizontal: 16, vertical: 35),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: themeProvider.isDarkMode
+                            ? Colors.black45
+                            : scaffoldBgColor,
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: TextField(
                         controller: searchTextController,
                         onSubmitted: (value) {},
                         decoration: const InputDecoration.collapsed(
-                            hintText: 'Type a message',
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                            )),
+                          hintText: 'Type a message',
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                            color: Colors
+                                .white70, // set a lighter color for the hint text
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
                     ),
                   ),

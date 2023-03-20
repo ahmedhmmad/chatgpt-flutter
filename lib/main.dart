@@ -10,6 +10,8 @@ import 'providers/theme_provider.dart';
 import 'screens/chat_screen.dart';
 import 'screens/enter_api_screen.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 void main() {
   runApp(ChangeNotifierProvider<ThemeProvider>(
     create: (_) => ThemeProvider()..getTheme(),
@@ -55,6 +57,15 @@ class MyApp extends StatelessWidget {
         child: Consumer<ThemeProvider>(
           builder: (context, themeProvider, child) {
             return MaterialApp(
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en', 'US'), // English
+                Locale('ar', 'SA'), // Arabic
+              ],
               debugShowCheckedModeBanner: false,
               title: 'ChatGPT',
               theme: ThemeData.light(),
