@@ -1,16 +1,18 @@
-import 'package:chatgptapp/providers/chat_provider.dart';
-import 'package:chatgptapp/providers/token_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'providers/apikey_provider.dart';
+import 'providers/chat_provider.dart';
 import 'providers/models_provider.dart';
 import 'providers/theme_provider.dart';
+import 'providers/token_provider.dart';
 import 'screens/chat_screen.dart';
 import 'screens/enter_api_screen.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'services/app_localizations.dart';
 
 void main() {
   runApp(ChangeNotifierProvider<ThemeProvider>(
@@ -58,14 +60,25 @@ class MyApp extends StatelessWidget {
           builder: (context, themeProvider, child) {
             return MaterialApp(
               localizationsDelegates: const [
+                AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
               ],
               supportedLocales: const [
-                Locale('en', 'US'), // English
-                Locale('ar', 'SA'), // Arabic
+                Locale('en'), // English
+                Locale('ar'), // Arabic
               ],
+              localeResolutionCallback: (deviceLocale, supportedLocales) {
+                for (var locale in supportedLocales) {
+                  if (deviceLocale != null &&
+                      deviceLocale.languageCode == locale.languageCode) {
+                    return deviceLocale;
+                  }
+                }
+
+                return supportedLocales.first;
+              },
               debugShowCheckedModeBanner: false,
               title: 'ChatGPT',
               theme: ThemeData.light(),

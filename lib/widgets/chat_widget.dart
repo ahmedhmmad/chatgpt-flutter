@@ -1,5 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:chatgptapp/services/assets_managers.dart';
+import '../services/assets_managers.dart';
 import 'package:flutter/material.dart';
 
 class ChatWidget extends StatelessWidget {

@@ -1,10 +1,11 @@
-import 'package:chatgptapp/providers/apikey_provider.dart';
-import 'package:chatgptapp/screens/chat_screen.dart';
+import '../providers/apikey_provider.dart';
+import '../screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../constants/constants.dart';
+import '../services/app_localizations.dart';
 
 class EnterApiScreen extends StatelessWidget {
   const EnterApiScreen({super.key});
@@ -45,21 +46,23 @@ class EnterApiScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
                 controller: apiKeyController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Enter API Key',
+                  labelText:
+                      AppLocalizations.of(context)?.translate("enter_api"),
                 ),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Don\'t have an API Key?'),
+                Text(AppLocalizations.of(context)!.translate("dont_have_api")),
                 TextButton(
                   onPressed: () {
                     _launchUrl(context, webViewController);
                   },
-                  child: const Text('Get API Key'),
+                  child:
+                      Text(AppLocalizations.of(context)!.translate("get_api")),
                 ),
               ],
             ),
@@ -75,9 +78,10 @@ class EnterApiScreen extends StatelessWidget {
               onPressed: () {
                 if (apiKeyController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       backgroundColor: Colors.red,
-                      content: Text('Please enter API Key'),
+                      content: Text(AppLocalizations.of(context)!
+                          .translate("please_enter_api")),
                     ),
                   );
                   return;
@@ -90,8 +94,8 @@ class EnterApiScreen extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const ChatScreen()));
               },
-              child: const Text(
-                'Submit',
+              child: Text(
+                AppLocalizations.of(context)!.translate("submit"),
                 style: TextStyle(fontSize: 20),
               ),
             ),

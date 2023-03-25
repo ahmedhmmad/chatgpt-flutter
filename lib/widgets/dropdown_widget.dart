@@ -1,7 +1,7 @@
-import 'package:chatgptapp/models/models_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/models_model.dart';
 import '../providers/models_provider.dart';
 
 class DropDownWidget extends StatefulWidget {

@@ -1,8 +1,8 @@
-import 'package:chatgptapp/services/api_services.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/models_model.dart';
+import '../services/api_services.dart';
 
 class ModelsProvider extends ChangeNotifier {
   List<ModelsModel> _models = [];

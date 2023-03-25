@@ -1,8 +1,8 @@
-import 'package:chatgptapp/screens/about_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
+import '../screens/about_screen.dart';
 import '../screens/settings_screen.dart';
 
 class MyDrawaer extends StatelessWidget {

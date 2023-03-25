@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chatgptapp/models/models_model.dart';
+import '../models/models_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/constants.dart';

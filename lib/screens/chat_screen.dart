@@ -1,6 +1,6 @@
-import 'package:chatgptapp/constants/constants.dart';
-import 'package:chatgptapp/services/api_services.dart';
-import 'package:chatgptapp/services/assets_managers.dart';
+import '../constants/constants.dart';
+import '../services/api_services.dart';
+import '../services/assets_managers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
